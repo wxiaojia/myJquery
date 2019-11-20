@@ -10,13 +10,14 @@
 		<script type="text/javascript">
 			console.log($())
 			// 1. extend 给任意对象扩展的参数
-			var obj1 = $.extend(true, {}, {name: 'max', age: '30'})
-			console.log(obj1)
+			// var obj1 = $.extend(true, {}, {name: 'max', age: '30'})
+			// console.log(obj1)
 			// 浅拷贝 深拷贝
 			var ret = {name: 'max', list:{age: '30'}}
 			var res = {list:{sex: '女'}}
-			var obj2 = $.extend({}, ret, res)
+			var obj2 = $.extend(true, {}, ret, res)
 			console.log(obj2)
+			// console.log(obj2)
 			// 2. 自定义扩展jq本身的一些实例和方法,即插件扩展的接口
 			// 对jQ本身扩展
 			/* jQuery.extend({
