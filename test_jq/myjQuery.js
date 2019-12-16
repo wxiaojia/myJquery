@@ -1,4 +1,5 @@
 /* jquery的入口及核心功能函数extend  */
+/* 选择器接口源码解析 */ 
 
 (function (root) {
 	/* 	1. 正则包含在//中
@@ -17,7 +18,7 @@
 	}
 	// selector 可以是对象，函数，字符串，context dom查询的时候 限定查询的范围
 	// jQuery.fn相当于jQuery.prototype简写
-	jQuery.fn = jQuery.prototype = {
+	jQuery.fn = jQuery.prototype = {	// 原型对象
 		length: 0,
 		selector: '',
 		init: function(selector, context) {
@@ -40,9 +41,25 @@
 					jQuery.merge(this, jQuery.parseHTML(selector, context))
 				} else {
 					// 查询dom
+					elem = document.querySelectorAll(selector)	// 查出来是类数组
+					var elems = Array.prototype.slice.call(elem)	// 转化为数组
+					this.length = elems.length		// this指向jquery对象
+					// 把document查到的elems扩展到jquery上去 ？？？ 为什么要扩展，之前不是放上去了吗
+					var index = 0
+					for (;index < elems.length; index++) {
+						this[index] = elems[index] 
+					}
+					this.context = context
+					this.selector = selector
 				}
-			} else if (selector.nodeType) {
-				
+			} else if (selector.nodeType) {	// selector如果是this，document,或window对象都会有nodetype
+				this.context = this[0] = selector
+				this.length = 1
+				return this
+			} else if (jQuery.isFunction(selector)) {
+				// 如果是函数的话，则在dom加载完后执行	
+			    //如果有ready方法先用ready否则用load。ready方法见下extend扩展
+				// return new jQuery( document )[ jQuery.fn.ready ? "ready" : "load" ]( selector );
 			}
 		},
 		css: function() {
@@ -127,7 +144,20 @@
 		isArray: function (obj) {
 			return toString.call(obj) === '[Object Array]'
 		},
-		// 合并数组
+		isFunction: function (obj) {
+			return toString.call(obj) === '[Object Function]'
+		},
+		ready: function(fn) {
+		    /* bindReady();
+		    if ( jQuery.isReady )
+		       //如果已经加载完毕，则马上执行
+		      fn.call( document, jQuery );
+		    else
+		      // 否则将函数添加到等待列表redylist
+		      jQuery.readyList.push( function() { return fn.call(this, jQuery); } );
+		    return this */;
+		},
+		// 合并数组 this [dom节点]
 		merge: function (first, second) {
 			var l = second.length,	// second  dom节点
 				i = first.length,
