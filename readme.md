@@ -10,4 +10,4 @@ test 		  测试自己写的
 
 callbacks: underscore中callbacks代码分析（自己写的）
 
-
+deferred: 延时对象，需要callback一起
