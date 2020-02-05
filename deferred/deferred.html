@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var wait = function () {
+				var der = $.Deferred()		// 延迟对象
+				var test = function () {
+					console.log('老司机开车啦')
+					der.resolve('max')
+				}
+				setTimeout(test, 2000)
+				return der			// 返回延时对象
+			}
+			
+			// 延迟对象的状态,决定调用哪个队列的处理函数
+			$.when(wait())		
+				.done(function(name) {			// 调用promise的done方法  即self.add() 往成功的队列中添加处理函数 
+					console.log(name)
+					console.log('执行成功')
+				})
+				.fail(function() {
+					console.log('执行失败')
+				})
+			
+		</script>
+	</body>
+</html>

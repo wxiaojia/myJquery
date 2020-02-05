@@ -51,7 +51,9 @@
 			}
 			// 因为每次调用callbacks都会返回一个队列
 			return self
-		}
+		},
+		deferred: function (func) {}
+		
 	}
 	function createOptions (options) {
 		var object = optionsCache[options] = {}
